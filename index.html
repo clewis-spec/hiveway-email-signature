@@ -48,6 +48,13 @@
         <input id="phone" value="(647) 229-9392">
         <label for="website">Website</label>
         <input id="website" value="hiveway.com">
+
+        <label for="signatureSize">Signature size</label>
+        <select id="signatureSize" style="box-sizing:border-box; width:100%; border:1px solid #cfd7e3; border-radius:8px; padding:10px 11px; font-size:13px; color:#061f35; outline:none; background:#ffffff;">
+          <option value="0.85">Compact</option>
+          <option value="1" selected>Standard</option>
+          <option value="1.15">Large</option>
+        </select>
         <button type="button" onclick="copySignature()">Copy Signature</button>
         <div class="note" id="status">After copying, paste directly into Gmail Settings → Signature.</div>
       </div>
@@ -91,8 +98,10 @@
       const website = document.getElementById('website').value || 'hiveway.com';
       const websiteHref = website.startsWith('http') ? website : 'https://' + website;
       const phoneHref = 'tel:' + cleanPhone(phone);
+      const scale = document.getElementById('signatureSize').value;
 
       return `
+<div style="zoom:${scale}; display:inline-block;">
 <table cellpadding="0" cellspacing="0" border="0" style="width:500px; max-width:500px; font-family:Arial, Helvetica, sans-serif; color:#061f35; background:#ffffff;">
   <tr>
     <td style="padding:8px 10px;">
@@ -119,10 +128,11 @@
           </td>
         </tr>
       </table>
-      <table cellpadding="0" cellspacing="0" border="0" width="500" style="width:500px; max-width:500px; margin-top:10px; border-top:1px solid #d7dde5;"><tr><td align="center" style="padding-top:6px; text-align:center; font-size:9px; line-height:12px; color:#6b778c; font-family:Arial, Helvetica, sans-serif;">Enable Revenue <span style="color:#635bff; font-weight:700;">Now.</span>. Powered by <span style="color:#f5a400; font-weight:700;">Hiveway</span>.</td></tr></table>
+      <table cellpadding="0" cellspacing="0" border="0" width="500" style="width:500px; max-width:500px; margin-top:10px; border-top:1px solid #d7dde5;"><tr><td align="center" style="padding-top:6px; text-align:center; font-size:9px; line-height:12px; color:#6b778c; font-family:Arial, Helvetica, sans-serif;">Proud partner of <span style="color:#635bff; font-weight:700;">Stripe</span>. Powered by <span style="color:#f5a400; font-weight:700;">Hiveway</span>.</td></tr></table>
     </td>
   </tr>
-</table>`;
+</table>
+</div>`;
     }
 
     function renderSignature() { document.getElementById('signaturePreview').innerHTML = signatureHtml(); }
@@ -139,7 +149,7 @@
       document.getElementById('status').textContent = 'Copied. Now paste it into Gmail Settings → Signature.';
     }
 
-    document.querySelectorAll('input').forEach(input => input.addEventListener('input', renderSignature));
+    document.querySelectorAll('input, select').forEach(input => input.addEventListener('input', renderSignature));
     renderSignature();
   </script>
 </body>
